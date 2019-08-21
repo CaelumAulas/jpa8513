@@ -1,0 +1,9 @@
+EM em1 = JpaUtil.getEntityManager();
+
+em1.getTransaction().begin();
+ProdutoDao dao = new ProdutoDao(em1);
+dao.atualizaQuantidade(produto);
+
+CaixaDao caixaDao = new CAixaDao(em1);
+caixaDao.credita(valor);
+em1.getTransaction.commit();

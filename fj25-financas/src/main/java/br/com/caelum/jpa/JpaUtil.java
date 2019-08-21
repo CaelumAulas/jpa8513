@@ -8,7 +8,7 @@ public class JpaUtil {
 
 	private final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("contas");
 	
-	public EntityManager getEntityManager() {
+	public static EntityManager getEntityManager() {
 		return emf.createEntityManager();
 	}
 	

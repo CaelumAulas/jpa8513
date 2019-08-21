@@ -18,6 +18,10 @@ public class Conta {
 	private String agencia;
 	private String numero;
 
+	public Long getId() {
+		return id;
+	}
+	
 	public String getTitular() {
 		return titular;
 	}
@@ -40,5 +44,9 @@ public class Conta {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
