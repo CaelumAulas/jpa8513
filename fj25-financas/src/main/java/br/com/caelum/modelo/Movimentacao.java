@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Table(name = "movimentacoes")
@@ -33,7 +35,8 @@ public class Movimentacao {
 
 	@JoinColumn(
 		name = "conta_id",
-		foreignKey = @ForeignKey(name = "fk_conta_id")
+		foreignKey = @ForeignKey(name = "fk_conta_id"),
+		nullable = false
 	)
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Conta conta;
@@ -86,4 +89,15 @@ public class Movimentacao {
 		this.conta = conta;
 	}
 
+	@Override
+	public String toString() {
+		return "Movimentacao [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", tipo=" + tipo + ", data="
+				+ data + ", conta=" + conta + "]";
+	}
+
+	@PrePersist
+	@PreUpdate
+	public void setUpdateAt() {
+		this.data = LocalDateTime.now();
+	}
 }

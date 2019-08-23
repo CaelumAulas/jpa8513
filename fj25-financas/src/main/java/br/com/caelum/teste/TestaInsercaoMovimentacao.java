@@ -21,7 +21,6 @@ public class TestaInsercaoMovimentacao {
 		
 		Movimentacao cinema = new Movimentacao();
 		cinema.setDescricao("Miranha");
-		cinema.setData(LocalDateTime.now());
 		cinema.setValor(new BigDecimal("50"));
 		cinema.setTipo(TipoDaMovimentacao.SAIDA);
 		cinema.setConta(conta);
