@@ -13,8 +13,8 @@ import javax.inject.Named;
 @Named
 @ViewScoped
 public class ContasBean implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
 
 	private Conta conta = new Conta();
 	private List<Conta> contas;
@@ -33,20 +33,27 @@ public class ContasBean implements Serializable {
 	public void grava() {
 		System.out.println("Gravando a conta");
 
-		contaDao.adiciona(conta);
-		
+		if (conta.getId() == null) {
+			contaDao.adiciona(conta);
+		} else {
+			contaDao.atualiza(conta);
+		}
+
 		limpaFormularioDoJSF();
 	}
 
 	public List<Conta> getContas() {
 		System.out.println("Listando as contas");
-		
+		if (this.contas == null) {
+			this.contas = contaDao.lista();
+		}
 		return contas;
 	}
 
 	public void remove() {
 		System.out.println("Removendo a conta");
-
+		contaDao.remove(conta);
+		this.contas = contaDao.lista();
 		limpaFormularioDoJSF();
 	}
 
