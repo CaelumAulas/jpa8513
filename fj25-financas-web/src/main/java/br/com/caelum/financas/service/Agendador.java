@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.AccessTimeout;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 
 @AccessTimeout(unit = TimeUnit.SECONDS, value = 2)
