@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import br.com.caelum.financas.modelo.Conta;
 import br.com.caelum.financas.modelo.Movimentacao;
@@ -19,6 +20,7 @@ public class MovimentacaoDao {
 	EntityManager manager;
 
 	public void adiciona(Movimentacao movimentacao) {
+		manager.joinTransaction();
 		this.manager.persist(movimentacao);
 	}
 
@@ -31,14 +33,15 @@ public class MovimentacaoDao {
 	}
 	
 	public List<Movimentacao> listaComCategorias() {
-		return this.manager.createQuery("select m from Movimentacao m "
+		return this.manager.createQuery("select distinct m from Movimentacao m "
 				+ "join fetch m.categorias", Movimentacao.class).getResultList();
 	}
 
 	public List<Movimentacao> movimentacoesPorConta(Conta conta) {
-		return this.manager.createQuery("select m from Movimentacao m where m.conta = :pConta", Movimentacao.class)
-					.setParameter("pConta", conta)
-					.getResultList();
+		TypedQuery<Movimentacao>  query = this.manager.createQuery("select m from Movimentacao m where m.conta = :pConta", Movimentacao.class);
+		query.setParameter("pConta", conta);
+		query.setHint("org.hibernate.cacheable", "true");
+		return query.getResultList();
 	}
 	
 	public List<Movimentacao> movimentacoesPorValorETipo(BigDecimal valor, TipoMovimentacao tipoMovimentacao) {
@@ -77,6 +80,7 @@ public class MovimentacaoDao {
 	
 	public void remove(Movimentacao movimentacao) {
 		Movimentacao movimentacaoParaRemover = this.manager.find(Movimentacao.class, movimentacao.getId());
+		manager.joinTransaction();
 		this.manager.remove(movimentacaoParaRemover);
 	}
 

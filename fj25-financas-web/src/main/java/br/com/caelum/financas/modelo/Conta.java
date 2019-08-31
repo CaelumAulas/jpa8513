@@ -1,10 +1,21 @@
 package br.com.caelum.financas.modelo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+@Cacheable
 @Entity
 public class Conta {
 
@@ -16,6 +27,13 @@ public class Conta {
 	private String numero;
 	private String banco;
 
+	@Version
+	private Integer versao;
+	
+	@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+	@OneToMany(mappedBy = "conta")
+	private List<Movimentacao> movimentacoes = new ArrayList<>();
+	
 	public Integer getId() {
 		return id;
 	}
@@ -56,4 +74,17 @@ public class Conta {
 		this.banco = banco;
 	}
 
+	public void adicionaMovimentacao(Movimentacao movimentacao) { 
+		movimentacoes.add(movimentacao);
+		movimentacao.setConta(this);
+	}
+	
+	public void removeMovimentacao(Movimentacao movimentacao) {
+		movimentacoes.remove(movimentacao);
+		movimentacao.setConta(null);
+	}
+	
+	public List<Movimentacao> getMovimentacoes() {
+		return Collections.unmodifiableList(movimentacoes);
+	}
 }
