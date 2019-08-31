@@ -1,9 +1,9 @@
 package br.com.caelum.compra.service;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
 import br.com.caelum.compra.dao.CompraDao;
 import br.com.caelum.compra.dao.ProdutoDao;
@@ -23,7 +23,7 @@ public class CompraService {
 	CompraService() {
 	}
 
-	@Transactional(value = TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.MANDATORY)
 	public Compra create(CompraDto compraDto) {
 
 		Produto produto = produtoDao.busca(compraDto.getProdutoId());

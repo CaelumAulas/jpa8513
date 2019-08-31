@@ -25,7 +25,11 @@ public class CompraResource {
 		this.produtoDao = produtoDao;
 	}
 
-	CompraResource() {
+	/*
+	 * @deprecated frameworks only
+	 */
+	@Deprecated
+	public CompraResource() {
 	}
 	
 	@POST
