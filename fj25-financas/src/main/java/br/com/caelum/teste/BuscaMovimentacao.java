@@ -2,7 +2,6 @@ package br.com.caelum.teste;
 
 import javax.persistence.EntityManager;
 
-import br.com.caelum.dao.MovimentacaoDao;
 import br.com.caelum.jpa.JpaUtil;
 import br.com.caelum.modelo.Movimentacao;
 
@@ -10,19 +9,14 @@ public class BuscaMovimentacao {
 
 	public static void main(String[] args) {
 		
-		EntityManager em = JpaUtil.getEntityManager();
+		EntityManager em1 = JpaUtil.getEntityManager();
+		EntityManager em2 = JpaUtil.getEntityManager();		
 		
-		MovimentacaoDao dao = new MovimentacaoDao(em);
+		Movimentacao movimentacao1 = em1.find(Movimentacao.class, 4l);
+		Movimentacao movimentacao2 = em2.find(Movimentacao.class, 4l);
 		
-		em.getTransaction().begin();
-		
-		Movimentacao movimentacao = dao.busca(1l);
-		
-		movimentacao.setDescricao("nova descricao");
-		
-		System.out.println(movimentacao);
-		System.out.println(movimentacao.getConta().getTitular());
-		em.getTransaction().commit();
+		System.out.println(movimentacao1.getDescricao());
+		System.out.println(movimentacao2.getDescricao());
 	}
 
 }
